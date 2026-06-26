@@ -12,7 +12,7 @@ The flight controller serves as the central processing unit for all aircraft fun
 
 The selected platform must support future software complexity while remaining suitable for learning low-level embedded development.
 
-## Selection Criteria
+# Selection Criteria
 
 - Processing performance
 - Memory capacity
