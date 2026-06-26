@@ -1,13 +1,13 @@
-Decision
+## Decision
 
-Write Custom Flight Firmware
+- Write Custom Flight Firmware
 
-Status
+## Status
 
-Accepted
+- Accepted
 
-Reason
+## Reason
 
-Learning
-Portfolio
-Complete control
+- Learning
+- Portfolio
+- Complete control
