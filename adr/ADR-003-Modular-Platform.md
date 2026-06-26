@@ -1,14 +1,14 @@
-Decision
+## Decision
 
-Modular LEGO Architecture
+- Modular LEGO Architecture
 
-Status
+## Status
 
-Accepted
+- Accepted
 
-Reason
+## Reason
 
-Future payloads
-Easy maintenance
-Custom PCB
-Research platform
+- Future payloads
+- Easy maintenance
+- Custom PCB
+- Research platform
