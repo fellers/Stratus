@@ -1,12 +1,12 @@
-Decision
+## Decision
 
-No ArduPilot Flight Stack
+- No ArduPilot Flight Stack
 
-Status
+## Status
 
-Accepted
+- Accepted
 
-Reason
+## Reason
 
-Educational objective
-Embedded experience
+- Educational objective
+- Embedded experience
