@@ -46,3 +46,15 @@ Fully printable frame
 - Every revision should remove one unknown
 - Prefer documented decisions over intuition
 - Components should be reusable across revisions whenever practical
+
+## License
+
+This project is proprietary and all rights are reserved.
+
+No use, copying, modification, distribution, or derivative works are permitted without the express written permission of the author.
+
+## Copyright
+
+Copyright © 2026 Austin Fellows. All rights reserved.
+
+See the LICENSE file for details.
