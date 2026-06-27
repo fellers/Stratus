@@ -1,7 +1,7 @@
 # Bill of Materials
 
 | Category | Component | Qty | Cost |  Link | Decision Record |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 | MCU | STM32H743XIH6 | 1 | $27 | [Amazon](https://www.amazon.com/dp/B0F28SFPB3?ref=ppx_yo2ov_dt_b_fed_asin_title) | [ADR-001](../decisions/adr/ADR-001-STM32H743-Architecture.md) |
 | IMU | ICM20602 | 1 | $10 | [Amazon](https://www.amazon.com/dp/B0FXWL157Q?ref=ppx_yo2ov_dt_b_fed_asin_title) | [HDR-001](../decisions/hdr/HDR-001-ICM20602-IMU.md) |
 | ESC | Aero Selfie 45A | 1 | $26 | [Amazon](https://www.amazon.com/dp/B0DQXPW3H4?ref=ppx_yo2ov_dt_b_fed_asin_title) | [HDR-003](../decisions/hdr/HDR-003-AeroSelfie-45A-ESC.md) |
