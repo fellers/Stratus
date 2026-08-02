@@ -1,6 +1,6 @@
-# Stratus Mechanical Engineering Standard
+# Stratus Electrical Engineering Standard
 
-Document ID: SES-001
+Document ID: SES-002
 
 Revision: 1.0
 
@@ -39,695 +39,869 @@ Last Updated: 2026-08-02
 1. Purpose
 2. Scope
 3. Governing Principles
-4. Units and Coordinate Conventions
-5. Standard Fasteners
-6. Threaded Inserts
-7. Standoffs and Spacers
-8. Module Mounting Standards
-9. Airframe Architecture
-10. Additive Manufacturing Standards
-11. Material Selection
-12. Vibration and Sensor Mounting
-13. Cable and Connector Accommodation
-14. Serviceability and Repair
-15. CAD Standards
-16. Drawing and Dimensioning Standards
-17. Mechanical Inspection
-18. Deviations and Exceptions
-19. References
-20. Related Documents
+4. Electrical System Classification
+5. Voltage and Power Conventions
+6. Grounding
+7. Wire and Conductor Standards
+8. Wire Color Conventions
+9. Connectors
+10. Power Distribution
+11. Signal Interfaces
+12. Inertial Sensor Interface
+13. ESC and Motor-Control Interfaces
+14. Development and Debug Interfaces
+15. Soldering and Termination
+16. Harness Construction
+17. Routing and Mechanical Protection
+18. Electrical Protection
+19. Electrical Inspection and Test
+20. Documentation and Identification
+21. Deviations and Exceptions
+22. References
+23. Related Documents
 
 ---
 
 # 1. Purpose
 
-This document establishes the mechanical engineering standards governing the design, fabrication, assembly, inspection, and maintenance of the Stratus platform.
+This document establishes the electrical engineering standards governing the design, assembly, integration, inspection, and maintenance of the Stratus platform.
 
-The purpose of this standard is to ensure that mechanical components remain modular, compatible, serviceable, and repeatable across Stratus revisions.
+The purpose of this standard is to ensure that Stratus electrical systems remain safe, reliable, maintainable, understandable, and reusable across future revisions.
 
-This document defines standard practices rather than component-selection rationale. Specific hardware selections and architectural decisions are documented in the applicable Hardware Decision Records and Architecture Decision Records.
+This document defines electrical implementation practices rather than component-selection rationale. Specific hardware selections and architectural decisions are documented in the applicable Hardware Decision Records and Architecture Decision Records.
 
 ---
 
 # 2. Scope
 
-This standard applies to mechanical components and assemblies developed for Stratus Rev A, including:
+This standard applies to Stratus Rev A electrical systems, including:
 
-- Airframe components
-- Electronics mounting structures
-- Battery mounting features
-- Motor mounting features
-- Fasteners
-- Threaded inserts
-- Standoffs and spacers
-- Protective structures
-- Additive-manufactured parts
-- Module interfaces
-- Cable-routing features
-- Mechanical CAD models and drawings
+- Battery connections
+- Power distribution
+- Flight Controller power
+- ESC power and control
+- Motor wiring
+- Sensor wiring
+- Communication interfaces
+- Programming and debugging interfaces
+- Connectors
+- Wire harnesses
+- Soldered joints
+- Strain relief
+- Grounding
+- Electrical inspection
+- Bench-test practices
 
-Commercial off-the-shelf components are not required to conform internally to this standard; however, their integration into Stratus shall conform to the applicable mounting, clearance, fastening, and serviceability requirements defined here.
+Commercial off-the-shelf components are not required to comply internally with this standard. Their integration into Stratus shall comply with the applicable voltage, grounding, wiring, connector, routing, and inspection requirements defined here.
 
 ---
 
 # 3. Governing Principles
 
-Mechanical development for Stratus shall follow these principles:
+Electrical development for Stratus shall follow these principles:
 
-### Modularity
+### Safety
 
-Subsystems shall be removable and replaceable without requiring destructive disassembly of unrelated subsystems.
+Electrical assemblies shall minimize the risk of short circuits, reverse polarity, overheating, unintended motor operation, and battery damage.
+
+### Reliability
+
+Connections shall remain mechanically and electrically secure under expected vibration, movement, and handling.
+
+### Maintainability
+
+Wiring shall be organized, identifiable, inspectable, and replaceable without unnecessary disassembly.
 
 ### Standardization
 
-Common fasteners, mounting patterns, insert sizes, and interface conventions shall be reused wherever practical.
+Common wire gauges, colors, connector types, signal names, and routing practices shall be reused wherever practical.
 
-### Serviceability
+### Separation of Concerns
 
-Frequently accessed components shall remain accessible using common hand tools.
+High-current power wiring and sensitive signal wiring shall be treated as distinct electrical classes.
 
-### Repairability
+### Traceability
 
-Damage to one structural module should not require replacement of the complete airframe.
-
-### Repeatability
-
-Parts shall be designed so that multiple instances can be fabricated and assembled with consistent results.
+Electrical interfaces shall be documented sufficiently to support troubleshooting, reproduction, and future redesign.
 
 ### Progressive Refinement
 
-Rev A designs shall prioritize architecture validation, manufacturability, and iteration speed over minimum weight or maximum structural optimization.
-
-### Compatibility
-
-Mechanical interfaces shall support future subsystem upgrades without unnecessary redesign of validated neighboring components.
+Rev A shall prioritize safe and understandable electrical integration over minimum harness mass or maximum packaging density.
 
 ---
 
-# 4. Units and Coordinate Conventions
+# 4. Electrical System Classification
 
-## 4.1 Units
+Stratus electrical connections shall be classified into the following categories:
 
-All mechanical dimensions shall use SI units.
+| Class | Description | Examples |
+| --- | --- | --- |
+| Primary Power | Unregulated battery-level power | Battery to ESC, battery input |
+| Regulated Power | Power supplied at a controlled voltage | 5 V and 3.3 V rails |
+| High-Current Output | Conductors carrying propulsion current | ESC-to-motor wiring |
+| Digital Signal | Logic-level control or communication | SPI, UART, SWD, motor commands |
+| Analog Signal | Voltage representing a measured quantity | Battery-voltage sensing |
+| Ground | Shared electrical reference and return path | Power ground, signal ground |
+| Development Interface | Temporary or permanent programming/debug access | SWD, USB, UART |
 
-- Linear dimensions: millimeters
-- Angular dimensions: degrees
-- Mass: grams or kilograms
-- Force: newtons
-- Torque: newton-millimeters or newton-meters
-
-Decimal values shall use a period as the decimal separator.
-
-## 4.2 Aircraft Coordinate System
-
-Unless otherwise specified, the aircraft coordinate system shall be defined as:
-
-- Positive X: forward
-- Positive Y: right
-- Positive Z: downward
-
-This convention shall be used consistently in mechanical, electrical, software, and sensor-orientation documentation.
-
-## 4.3 Origin
-
-The preferred aircraft reference origin shall be located at the geometric center of the motor layout or another explicitly documented central datum.
-
-Subsystem-specific coordinate systems shall document their relationship to the aircraft coordinate system.
+The classification of each interface shall be considered when selecting wire gauge, routing, connector type, and protection.
 
 ---
 
-# 5. Standard Fasteners
+# 5. Voltage and Power Conventions
 
-## 5.1 Preferred Thread Series
+## 5.1 Battery Platform
 
-Metric fasteners shall be used throughout Stratus.
+Stratus Rev A shall use a nominal 4S lithium-polymer battery platform unless superseded by an approved decision record.
 
-Preferred sizes are:
+A 4S LiPo battery has:
 
-| Size | Preferred Use |
-| --- | --- |
-| M2 | Electronics, lightweight modules, sensor mounts, and small printed components |
-| M2.5 | Intermediate mounting where component interfaces require it |
-| M3 | Structural joints, motor mounts, major frame members, and higher-load connections |
+- Nominal voltage: approximately 14.8 V
+- Maximum fully charged voltage: 16.8 V
+- Minimum safe voltage dependent on cell condition, load, and operating policy
 
-Imperial fasteners shall not be introduced unless required by a commercial component for which no practical metric alternative exists.
+All battery-connected equipment shall be rated for the maximum expected battery voltage, not only the nominal voltage.
 
-## 5.2 Preferred Head Style
+## 5.2 Logic Voltage
 
-Socket-head cap screws shall be the default fastener type.
+The primary digital logic level shall be 3.3 V unless an interface explicitly requires another level.
 
-Button-head screws may be used where reduced profile is required and the lower tool engagement is acceptable.
+Five-volt signals shall not be connected directly to non-five-volt-tolerant MCU or sensor pins.
 
-Countersunk screws shall only be used when:
+## 5.3 Regulated Rails
 
-- A flush surface is required.
-- The receiving part is designed with the correct countersink geometry.
-- The reduced material thickness does not compromise the joint.
+Each regulated rail shall document:
 
-Phillips-head and slotted fasteners should be avoided.
+- Nominal voltage
+- Expected tolerance
+- Maximum continuous current
+- Source
+- Loads
+- Ground reference
+- Protection
+- Connector or test-point location
 
-## 5.3 Fastener Material
+## 5.4 Power-Off Assumption
 
-Stainless steel fasteners shall be the default for general structural and electronics assembly.
-
-Nylon fasteners may be used for:
-
-- Electrically sensitive mounting
-- Low-load electronics retention
-- Intentional mechanical isolation
-- Sacrificial or breakaway features
-- Weight reduction where structural strength is not required
-
-Nylon fasteners shall not be used for motor mounting or primary structural joints.
-
-## 5.4 Engagement
-
-Thread engagement shall be sufficient to prevent stripping or loosening under expected service loads.
-
-As a general design objective:
-
-- Metal-to-metal joints should provide at least one nominal fastener diameter of thread engagement.
-- Polymer joints should use inserts or greater engagement where practical.
-- Fasteners shall not bottom out before clamping the joint.
-
-## 5.5 Fastener Retention
-
-Thread-locking compound may be used on metal-to-metal joints subject to vibration.
-
-Thread-locking compound shall not be applied to:
-
-- Nylon fasteners
-- Polymer threads
-- Heat-set inserts where chemical compatibility is unknown
-- Components requiring frequent adjustment unless explicitly justified
+Electrical assembly, continuity testing, connector changes, and soldering shall be performed with the propulsion battery disconnected.
 
 ---
 
-# 6. Threaded Inserts
+# 6. Grounding
 
-## 6.1 Preferred Type
+## 6.1 Common Reference
 
-Brass heat-set threaded inserts shall be the preferred reusable thread interface in additive-manufactured structural components.
+All digital communication interfaces shall share a valid ground reference unless electrical isolation is explicitly designed into the interface.
 
-## 6.2 Preferred Sizes
+## 6.2 Power and Signal Grounds
 
-M2 and M3 inserts shall be used as the primary insert sizes.
+Power and signal grounds may share a common electrical reference, but routing shall minimize high-current motor and ESC return currents through sensitive sensor-ground paths.
 
-M2.5 inserts may be used when required by component interfaces.
+## 6.3 Ground Loops
 
-## 6.3 Insert Geometry
+Unnecessary parallel ground paths shall be avoided where they may create circulating currents, noise coupling, or ambiguous current return paths.
 
-Insert holes shall be designed according to the actual insert manufacturer’s recommended dimensions.
+## 6.4 Sensor Grounding
 
-When manufacturer dimensions are unavailable, test coupons shall be printed before finalizing the production geometry.
+The IMU and other sensitive sensors shall use a short, low-impedance ground connection referenced to the Flight Controller.
 
-## 6.4 Installation
+## 6.5 Debug Ground
 
-Heat-set inserts shall be installed:
+SWD, UART, USB, logic-analyzer, and oscilloscope connections shall include a common ground unless the instrument or interface is specifically isolated.
 
-- Perpendicular to the mating surface
-- At a controlled temperature
-- Without excessive axial force
-- Flush with or slightly below the designed reference surface
-- Without visible cracking, distortion, or material displacement that interferes with assembly
+## 6.6 Bench Equipment
 
-## 6.5 Design Restrictions
-
-Heat-set inserts shall not be placed:
-
-- Too close to thin walls
-- In unsupported cantilever features
-- Where insertion heat may deform critical geometry
-- Where insufficient surrounding material exists to transfer load
+Before attaching grounded bench equipment, the engineer shall understand whether the instrument ground is earth-referenced and whether the connection can create an unintended short.
 
 ---
 
-# 7. Standoffs and Spacers
+# 7. Wire and Conductor Standards
 
-## 7.1 Preferred Standoff Material
+## 7.1 Conductor Construction
 
-Nylon standoffs are acceptable and preferred for initial Rev A electronics mounting where:
+Flexible aircraft wiring shall use stranded copper conductors.
 
-- Loads are low.
-- Electrical isolation is beneficial.
-- Elevated temperatures are not expected.
-- The standoff is not part of the primary load path.
+Tinned stranded copper is preferred because it improves solderability and corrosion resistance.
 
-Metal standoffs shall be used where greater stiffness, temperature resistance, or thread durability is required.
+Solid-core wire shall not be used for flight wiring subject to vibration or repeated flexing.
 
-## 7.2 Preferred Size
+## 7.2 Insulation
 
-M2 standoffs shall be the default for lightweight electronics modules unless the component uses another established mounting pattern.
+Flexible silicone insulation is preferred for internal aircraft wiring because of its:
 
-## 7.3 Standoff Selection
-
-Standoff length shall provide adequate clearance for:
-
-- Solder joints
-- Pin headers
-- Wiring
-- Connectors
-- Component height
-- Airflow
-- Assembly tools
-
-## 7.4 Stack Stability
-
-Tall standoff stacks shall be evaluated for bending and vibration.
-
-Multiple short adapters should not be stacked when a correctly sized single standoff is available.
-
----
-
-# 8. Module Mounting Standards
-
-## 8.1 Standard Mounting Patterns
-
-Modules shall use recognized mounting patterns wherever practical.
-
-Preferred patterns include:
-
-- 20 × 20 millimeter electronics mounting
-- 25.5 × 25.5 millimeter electronics mounting where required
-- 30.5 × 30.5 millimeter electronics mounting for larger modules
-- Component-specific motor mounting patterns
-- Explicitly documented Stratus module patterns for custom assemblies
-
-Hole-to-hole dimensions shall describe hole-center spacing.
-
-## 8.2 Standard Interface Definition
-
-Each module interface shall define:
-
-- Mounting-hole pattern
-- Fastener size
-- Maximum component envelope
-- Connector-access requirements
-- Cable-exit direction
-- Required clearances
-- Orientation
-- Datum or alignment features
-- Expected mass where relevant
-
-## 8.3 Slotted Features
-
-Slots may be used during prototyping to accommodate uncertain or variable dimensions.
-
-Production-intent revisions should replace unnecessary slots with fixed holes once interfaces have been validated.
-
-## 8.4 Direct Polymer Threads
-
-Repeatedly serviced components shall not rely on self-tapped threads directly in printed polymer unless the connection is explicitly considered temporary or sacrificial.
-
----
-
-# 9. Airframe Architecture
-
-## 9.1 Modular Construction
-
-The Rev A airframe shall be divided into replaceable mechanical modules wherever practical.
-
-Potential modules include:
-
-- Central electronics structure
-- Individual arms
-- Motor mounts
-- Battery mount
-- Protective covers
-- Sensor mounts
-- Landing features
-- Payload interfaces
-
-## 9.2 Structural Load Paths
-
-Primary thrust and landing loads shall be transferred through intentional structural paths.
-
-Electronics enclosures, cosmetic covers, and cable-routing features shall not unintentionally serve as primary structural members.
-
-## 9.3 Arm Replacement
-
-Where practical, individual arms shall be replaceable without removing the complete electronics stack.
-
-## 9.4 Propeller Clearance
-
-The design shall provide adequate clearance among:
-
-- Propellers
-- Frame components
-- Wiring
-- Battery
-- Payloads
-- Landing structures
-- Adjacent propeller disks
-
-Propeller clearance shall account for manufacturing tolerances, structural deflection, and minor crash deformation.
-
-## 9.5 Center of Mass
-
-Heavy components should be positioned near the aircraft center where practical.
-
-Battery mounting shall permit reasonable adjustment of longitudinal and lateral center of mass.
-
-## 9.6 Expansion
-
-The mechanical architecture shall reserve practical routes or mounting provisions for future:
-
-- Navigation sensors
-- Radio modules
-- Telemetry
-- Cameras
-- Companion computing
-- Payloads
-- Custom electronics
-
----
-
-# 10. Additive Manufacturing Standards
-
-## 10.1 Preferred Manufacturing Method
-
-Stratus Rev A structural and integration components shall be designed primarily for fused-filament fabrication unless another process is explicitly required.
-
-## 10.2 Design for Printing
-
-Parts should be designed to:
-
-- Minimize unsupported overhangs
-- Reduce unnecessary support material
-- Avoid trapped support structures
-- Maintain consistent wall thickness
-- Provide appropriate fillets at stress concentrations
-- Orient layer lines with expected loads in mind
-- Allow dimensional adjustment through parameters
-
-## 10.3 Minimum Features
-
-Minimum wall thickness, hole diameter, clearance, and feature size shall be validated against the selected printer, material, nozzle, and process settings.
-
-Critical interfaces shall be validated using test coupons where uncertainty exists.
-
-## 10.4 Hole Compensation
-
-Printed holes may require dimensional compensation.
-
-Nominal CAD diameter shall not be assumed to produce an equal finished diameter.
-
-Final dimensions shall be established through calibration and documented where the interface is critical.
-
-## 10.5 Layer Orientation
-
-Parts shall be oriented so that primary service loads do not unnecessarily separate layer bonds.
-
-Motor mounts, arms, and fastener interfaces shall receive explicit layer-orientation review.
-
-## 10.6 Supports
-
-Support-generated surfaces shall not be used as precision mating surfaces unless post-processing is planned.
-
-## 10.7 Print Records
-
-For flight-intent structural parts, the following should be recorded:
-
-- Material
-- Manufacturer
-- Printer
-- Nozzle diameter
-- Layer height
-- Wall count
-- Top and bottom layers
-- Infill type and percentage
-- Print orientation
-- Supports
-- Part revision
-- Date printed
-
----
-
-# 11. Material Selection
-
-## 11.1 Prototype Materials
-
-PLA may be used for:
-
-- Dimensional prototypes
-- Fit checks
-- Bench fixtures
-- Low-temperature non-flight testing
-
-PLA should not be assumed suitable for final flight hardware exposed to heat, sunlight, sustained stress, or impact.
-
-## 11.2 Flight-Intent Materials
-
-PETG, ASA, nylon, fiber-reinforced polymers, or other engineering materials may be selected based on:
-
-- Strength
-- Toughness
-- Temperature resistance
-- Creep resistance
-- Printability
-- Environmental resistance
-- Required stiffness
-- Expected impact behavior
-
-## 11.3 Material Qualification
-
-A material shall not be considered flight-qualified solely because it printed successfully.
-
-Critical parts shall be evaluated for:
-
-- Layer adhesion
-- Fastener retention
-- Insert retention
-- Impact resistance
+- Flexibility
 - Heat resistance
-- Creep
-- Dimensional stability
+- Soldering tolerance
+- Resistance to cracking under repeated movement
 
-## 11.4 Material Traceability
+Other insulation materials may be used when their temperature, flexibility, abrasion, and voltage ratings are appropriate.
 
-Material type and significant print settings shall be associated with the part revision for flight-intent components.
+## 7.3 Standard Gauges
 
----
+The following gauges are preferred for Rev A:
 
-# 12. Vibration and Sensor Mounting
+| Gauge | Preferred Use |
+| --- | --- |
+| 18 AWG | Primary battery and higher-current power connections where appropriate |
+| 22 AWG | Moderate-current regulated power and accessory power |
+| 24 AWG | Low-current power, SPI, UART, control, and general signal wiring |
 
-## 12.1 Inertial Sensor Mounting
+Actual conductor size shall be selected based on:
 
-The IMU shall be mounted:
+- Maximum current
+- Wire length
+- Voltage drop
+- Temperature rise
+- Flexibility
+- Connector capacity
+- Fault current
+- Available space
 
-- Rigidly enough to preserve the intended sensor orientation
-- Away from direct mechanical interference
-- With a documented axis relationship to the airframe
-- In a location that minimizes unnecessary vibration and flexure
-- As close to the aircraft center of rotation as practical
+## 7.4 Current Rating
 
-## 12.2 Isolation
+Wire gauge shall not be selected solely from a generic ampacity table. The design shall also consider:
 
-Vibration-isolation materials may be introduced when testing demonstrates a need.
+- Bundle heating
+- Enclosure temperature
+- Duty cycle
+- Propulsion current transients
+- Connector limits
+- Solder-joint capacity
+- Voltage-drop tolerance
 
-Isolation shall not permit excessive sensor movement or introduce poorly controlled resonant behavior.
+## 7.5 Wire Length
 
-## 12.3 Orientation
+Wiring shall be no longer than reasonably required for assembly, serviceability, and strain relief.
 
-Sensor orientation shall be mechanically keyed, marked, or otherwise documented to prevent ambiguous installation.
-
-## 12.4 Propulsion Vibration
-
-Motor, propeller, and arm interfaces shall be inspected for looseness, imbalance, and resonance before attributing vibration solely to the sensor mount.
-
----
-
-# 13. Cable and Connector Accommodation
-
-Mechanical designs shall provide adequate accommodation for wiring and connectors.
-
-The design shall:
-
-- Avoid sharp edges contacting insulation
-- Prevent wire interference with propellers
-- Avoid excessive bend radius
-- Provide strain relief where required
-- Preserve connector access
-- Avoid crushing wires between structural parts
-- Separate high-current wiring from sensitive sensor wiring where practical
-- Allow disassembly without cutting permanent wiring wherever practical
-
-Cable-routing features shall comply with SES-002.
+Excessive service loops shall be avoided where they add mass, obstruct airflow, or increase electromagnetic coupling.
 
 ---
 
-# 14. Serviceability and Repair
+# 8. Wire Color Conventions
 
-## 14.1 Tool Access
+The following color convention shall be used wherever practical:
 
-Fasteners intended for routine access shall be reachable using common tools without dismantling unrelated modules.
+| Color | Function |
+| --- | --- |
+| Black | Ground or negative return |
+| Red | Positive power |
+| Orange | Battery-level positive power where distinction from regulated power is useful |
+| Yellow | Clock or timing signal |
+| Green | Data signal |
+| Blue | Data signal or secondary communication line |
+| White | Chip select, enable, interrupt, or miscellaneous control |
+| Purple | Reserved auxiliary signal |
+| Gray | Reserved or nonstandard signal requiring explicit labeling |
 
-## 14.2 Replaceable Components
+Color alone shall not be treated as sufficient identification for complex harnesses.
 
-Motors, arms, electronics modules, battery straps, and protective components should be replaceable independently where practical.
+Where only one wire color is available, both ends shall be labeled or otherwise documented.
 
-## 14.3 Captive Hardware
-
-Captive nuts or inserts may be used to simplify field maintenance, provided they remain inspectable and replaceable.
-
-## 14.4 Assembly Order
-
-Assemblies shall have a defined installation and removal sequence where order affects serviceability or wire access.
-
-## 14.5 Wear Items
-
-Parts expected to wear, deform, or absorb crash energy should be:
-
-- Inexpensive
-- Easy to manufacture
-- Easy to replace
-- Separable from costly electronics
+Black wire may be used exclusively for ground in mixed-color harnesses.
 
 ---
 
-# 15. CAD Standards
+# 9. Connectors
 
-## 15.1 Parametric Design
+## 9.1 General Requirements
 
-Mechanical parts shall use parametric dimensions where practical.
+Connectors shall be selected based on:
 
-Critical interface values should be driven by named parameters rather than repeated manual dimensions.
+- Current rating
+- Voltage rating
+- Pin count
+- Polarization
+- Retention
+- Vibration resistance
+- Size
+- Weight
+- Availability
+- Serviceability
+- Mating-cycle requirements
 
-## 15.2 Component Separation
+## 9.2 Battery Connector
 
-Distinct physical components shall be represented as separate CAD components or bodies according to the capabilities of the CAD system.
+XT30 shall be the standard Rev A propulsion-battery connector unless superseded by an approved decision.
 
-## 15.3 Naming
+Battery connectors shall be polarized and installed so that exposed conductive surfaces do not present an avoidable short-circuit hazard.
 
-CAD objects shall use descriptive names.
+## 9.3 Signal Connectors
 
-Avoid default names such as:
+Signal connectors shall be keyed or polarized where practical.
 
-- Body1
-- Sketch7
-- Component12
-- Copy of Part
+Unkeyed headers shall use clear pin-1 identification and documented orientation.
 
-Preferred names include:
+## 9.4 Connector Current
 
-- CenterPlate
-- FrontLeftArm
-- ImuMount
-- BatteryTray
-- MotorMount
-- ElectronicsCover
+The current rating of a circuit shall not exceed the rating of its connector, terminals, PCB traces, or conductors.
 
-## 15.4 Revision Identification
+The lowest-rated element determines the allowable circuit current.
 
-Exported mechanical files shall include sufficient naming information to identify:
+## 9.5 Connector Retention
 
-- Project
-- Part
-- Revision
-- Manufacturing representation where relevant
+Connectors subject to vibration or movement shall have adequate friction retention, latch retention, strain relief, or secondary retention.
 
-Example:
+Permanent adhesive shall not be used as a substitute for an unsuitable connector.
 
-text STRATUS-REV-A-IMU-MOUNT-R01.stl 
+## 9.6 Mating Compatibility
 
-## 15.5 Source and Export Files
-
-Editable source models shall be retained.
-
-Manufacturing exports such as STL, STEP, or 3MF files shall not replace the authoritative parametric source model.
-
-## 15.6 Reference Models
-
-Commercial component models shall be marked as reference geometry unless they are internally verified.
-
-Unverified downloaded CAD shall not be treated as dimensionally authoritative.
+Physically compatible connectors carrying different voltages or functions shall be avoided where accidental interchange could cause damage.
 
 ---
 
-# 16. Drawing and Dimensioning Standards
+# 10. Power Distribution
 
-Critical components and interfaces should include sufficient drawings or documented dimensions to support independent reproduction.
+## 10.1 Primary Power Path
 
-Dimensions shall be taken from defined datums.
+The primary propulsion power path shall be:
 
-Critical dimensions may include:
+text Battery   ↓ XT30 connector   ↓ ESC / power-distribution input   ↓ Individual motor phases 
 
-- Mounting-hole spacing
-- Hole diameter
-- Insert bore diameter
-- Plate thickness
-- Motor-axis location
-- Propeller clearance
-- Connector envelope
-- Standoff height
-- Sensor orientation
-- Battery envelope
+Accessory and Flight Controller power shall branch through an explicitly identified regulated source.
 
-Redundant or conflicting dimensions shall be avoided.
+## 10.2 Current Paths
+
+High-current paths shall be short and mechanically secure.
+
+Primary power conductors shall not rely on breadboards, low-current jumper wires, or temporary test clips during powered propulsion operation.
+
+## 10.3 Polarity
+
+Positive and negative battery connections shall be verified before first power application and after any connector replacement.
+
+## 10.4 Power Sequencing
+
+Subsystems shall not depend on an undocumented power-up sequence.
+
+Where sequencing is required, it shall be defined in ARC-001 or the applicable interface specification.
+
+## 10.5 Regulator Capacity
+
+Regulated power sources shall include adequate current margin for:
+
+- Flight Controller
+- IMU
+- Communication modules
+- Future peripherals
+- Startup transients
+- Expected expansion
+
+## 10.6 Brownout Prevention
+
+Power architecture shall minimize voltage droop capable of resetting the Flight Controller or corrupting sensor operation during propulsion transients.
+
+## 10.7 Test Points
+
+Critical rails should provide accessible test points for:
+
+- Battery voltage
+- Regulated voltage
+- Ground
+- Current measurement where practical
 
 ---
 
-# 17. Mechanical Inspection
+# 11. Signal Interfaces
 
-Mechanical assemblies shall be inspected before powered testing and flight.
+## 11.1 Logic Compatibility
 
-Inspection should include:
+Both sides of a digital interface shall be electrically compatible in:
 
-- Correct fastener installation
-- Insert seating
-- Cracks or layer separation
-- Warped parts
-- Motor security
-- Propeller clearance
-- Wiring clearance
-- Battery retention
-- Sensor orientation
-- Connector accessibility
-- Loose components
-- Center-of-mass concerns
-- Evidence of heat or material deformation
+- Voltage level
+- Input threshold
+- Output drive
+- Pull-up or pull-down requirements
+- Maximum frequency
+- Signal direction
 
-Flight-intent assemblies shall not proceed to powered propulsion testing with known structural damage or unsecured components.
+## 11.2 Signal Naming
+
+Signal names shall identify interface and function.
+
+Examples:
+
+text IMU_SPI_SCK IMU_SPI_MISO IMU_SPI_MOSI IMU_CS IMU_INT ESC_M1 ESC_M2 UART1_TX UART1_RX SWDIO SWCLK 
+
+Generic names such as WIRE1, DATA, or PIN4 shall be avoided in authoritative documentation.
+
+## 11.3 Unused Inputs
+
+Unused digital inputs shall not be intentionally left floating when their state can affect system behavior.
+
+They shall be configured with an appropriate pull-up, pull-down, or defined external bias where required.
+
+## 11.4 Cable Length
+
+High-speed digital wiring shall be kept short.
+
+Longer interfaces shall be evaluated for signal integrity, noise susceptibility, and grounding.
+
+## 11.5 Twisted Pairs
+
+Twisted conductors may be used for:
+
+- Power and ground
+- Clock and ground
+- Sensitive signal and ground
+- Differential interfaces
+
+Twisting shall not be used without considering connector layout and serviceability.
 
 ---
 
-# 18. Deviations and Exceptions
+# 12. Inertial Sensor Interface
+
+## 12.1 Preferred Interface
+
+The primary IMU shall use SPI for normal flight operation unless superseded by an approved architecture decision.
+
+## 12.2 Required Signals
+
+The IMU interface shall include, as applicable:
+
+- Regulated power
+- Ground
+- SPI clock
+- Controller-to-sensor data
+- Sensor-to-controller data
+- Chip select
+- Interrupt
+- Optional auxiliary signals
+
+## 12.3 Chip Select
+
+The IMU chip-select signal shall have a defined inactive state during reset and initialization.
+
+## 12.4 Routing
+
+IMU signal wiring shall be:
+
+- Short
+- Separated from motor phase wires where practical
+- Separated from primary battery wiring where practical
+- Mechanically restrained
+- Referenced to a reliable ground
+- Routed to minimize loop area
+
+## 12.5 Sensor Power
+
+The IMU shall be powered only from a rail compatible with the breakout board and sensor.
+
+Compatibility shall be verified from the actual module documentation rather than assumed from the sensor IC alone.
+
+## 12.6 Orientation and Pinout
+
+The electrical pinout and mechanical axis orientation shall both be documented.
+
+---
+
+# 13. ESC and Motor-Control Interfaces
+
+## 13.1 ESC Power
+
+The ESC battery input shall use conductors and connectors rated for expected current and voltage.
+
+## 13.2 Motor Phases
+
+The three phase conductors between each ESC channel and motor shall:
+
+- Use equal or reasonably similar lengths where practical
+- Be mechanically retained
+- Avoid propeller interference
+- Avoid sharp bends
+- Be sized for expected motor current
+
+## 13.3 Motor Direction
+
+Motor direction may be reversed by changing control configuration or exchanging two motor phase conductors.
+
+The final motor direction shall be documented and verified without installed propellers.
+
+## 13.4 Control Signals
+
+Each ESC channel shall receive a distinct motor-control signal referenced to system ground.
+
+Motor-output signal naming shall correspond consistently to the physical motor-numbering convention.
+
+## 13.5 Bench Testing
+
+Motor and ESC tests shall initially be performed:
+
+- Without propellers
+- With the airframe restrained
+- With a readily accessible battery disconnect
+- At minimum practical command level
+- After verifying motor mapping and direction
+
+## 13.6 Safe State
+
+Motor-control outputs shall default to a non-commanding state during reset, boot, fault, and programming operations.
+
+---
+
+# 14. Development and Debug Interfaces
+
+## 14.1 SWD
+
+The Flight Controller shall provide access to:
+
+- SWDIO
+- SWCLK
+- Ground
+- Target-voltage reference where required
+- Reset where practical
+
+## 14.2 Debug Power
+
+The target shall not be unintentionally powered simultaneously from multiple sources unless the interfaces are explicitly designed to permit it.
+
+Before connecting debugger power:
+
+- Identify whether the debugger pin is power output or voltage reference.
+- Identify whether the target is already powered.
+- Verify common ground.
+- Confirm acceptable voltage.
+
+## 14.3 USB DFU
+
+USB DFU may be used as a firmware recovery or programming path when supported by the MCU and board.
+
+DFU does not replace the need for SWD debugging during software development.
+
+## 14.4 UART
+
+A development UART should be reserved for:
+
+- Diagnostic output
+- Bring-up
+- Telemetry prototyping
+- Fault reporting
+
+Default development settings should be documented, including baud rate, parity, data bits, and stop bits.
+
+## 14.5 Test Equipment
+
+Logic analyzers and oscilloscopes shall be connected only after verifying:
+
+- Voltage compatibility
+- Common ground
+- Probe-ground behavior
+- Maximum input voltage
+- Suitable sample rate or bandwidth
+
+---
+
+# 15. Soldering and Termination
+
+## 15.1 Joint Quality
+
+Solder joints shall be:
+
+- Mechanically secure
+- Electrically continuous
+- Properly wetted
+- Free from unintended bridges
+- Free from loose strands
+- Free from excessive exposed conductor
+
+## 15.2 Preparation
+
+Stranded conductors shall be stripped without cutting a significant number of strands.
+
+Conductors and pads may be pre-tinned where appropriate.
+
+## 15.3 Heat
+
+Soldering temperature and dwell time shall be controlled to avoid:
+
+- Melted insulation
+- Lifted pads
+- Damaged connectors
+- Delaminated PCB material
+- Heat-damaged components
+
+## 15.4 Heat Shrink
+
+Heat-shrink tubing shall be used where practical to:
+
+- Insulate exposed joints
+- Provide strain relief
+- Identify conductors
+- Protect splices
+
+Heat shrink shall not hide an uninspected or mechanically weak joint.
+
+## 15.5 Splices
+
+Splices should be minimized.
+
+Where unavoidable, splices shall be:
+
+- Mechanically secure
+- Properly soldered or crimped
+- Insulated
+- Strain-relieved
+- Documented if located inside a permanent harness
+
+## 15.6 Crimping
+
+Crimp terminals shall use tooling appropriate for the terminal family.
+
+Crimping with generic pliers shall not be considered an acceptable production-intent termination method.
+
+---
+
+# 16. Harness Construction
+
+## 16.1 Harness Definition
+
+A harness shall document:
+
+- Source
+- Destination
+- Signal names
+- Wire gauge
+- Wire color
+- Connector type
+- Pin assignments
+- Approximate length
+- Branch points
+- Shielding or twisting where applicable
+
+## 16.2 Branching
+
+Harness branches shall not place unsupported stress on solder joints or connector terminals.
+
+## 16.3 Service Loops
+
+A small service allowance may be included where needed for connector access and assembly.
+
+Service loops shall not be large enough to interfere with propellers, airflow, sensors, or structural movement.
+
+## 16.4 Bundling
+
+Wire bundles may use:
+
+- Braided sleeving
+- Spiral wrap
+- Heat-shrink sections
+- Releasable cable ties
+- Printed routing clips
+
+Bundling methods shall not crush insulation or prevent required movement.
+
+## 16.5 Harness Replacement
+
+Frequently serviced harnesses should be replaceable independently from major structural components.
+
+---
+
+# 17. Routing and Mechanical Protection
+
+Wiring shall be routed to avoid:
+
+- Propeller disks
+- Motor bells
+- Sharp edges
+- Pinch points
+- Hot components
+- Moving joints
+- Excessive flexing
+- Direct contact with abrasive printed surfaces
+- High-current noise sources where sensitive signals are present
+
+Wiring shall be supported near connectors so that vibration is not transferred directly to solder joints.
+
+Pass-through holes shall use adequate edge radius, grommets, sleeving, or another protective method where abrasion is possible.
+
+Routing shall comply with the mechanical-clearance requirements in SES-001.
+
+---
+
+# 18. Electrical Protection
+
+## 18.1 Reverse Polarity
+
+Polarized connectors shall be used where possible.
+
+Battery polarity shall be verified before initial connection.
+
+## 18.2 Short-Circuit Prevention
+
+Exposed battery-level conductors shall be minimized and insulated.
+
+Loose conductive tools and hardware shall be kept away from powered assemblies.
+
+## 18.3 Overcurrent Protection
+
+Bench power supplies should use a current limit during initial subsystem bring-up where practical.
+
+Any fuse or protection device shall be rated for the expected normal and transient current.
+
+## 18.4 Transient Protection
+
+Sensitive electronics shall be protected from expected switching transients and supply noise through appropriate architecture, component selection, filtering, and layout.
+
+## 18.5 Battery Safety
+
+LiPo batteries shall be:
+
+- Charged with a compatible balance charger
+- Inspected before use
+- Stored at an appropriate storage voltage
+- Kept away from conductive debris
+- Removed from service when swollen, punctured, overheated, or otherwise damaged
+- Charged in a suitable fire-resistant location or enclosure
+- Never left charging unattended
+
+## 18.6 Propulsion Safety
+
+Electrical tests capable of commanding motors shall be treated as powered propulsion tests, even when low command values are expected.
+
+Propellers shall remain removed until motor mapping, direction, safe-state behavior, and command limits have been verified.
+
+---
+
+# 19. Electrical Inspection and Test
+
+## 19.1 Pre-Power Inspection
+
+Before first power application, inspect:
+
+- Battery polarity
+- Connector orientation
+- Exposed conductors
+- Solder bridges
+- Loose wire strands
+- Wire gauge
+- Harness routing
+- Ground continuity
+- Power-to-ground resistance
+- Regulator orientation
+- Component voltage ratings
+- Mechanical strain on terminals
+
+## 19.2 Continuity Testing
+
+Continuity testing shall verify:
+
+- Intended point-to-point connections
+- Ground continuity
+- Absence of unintended shorts
+- Correct connector pinout
+- Correct motor-channel mapping where practical
+
+## 19.3 Initial Power-Up
+
+Initial power-up should use one or more of:
+
+- Current-limited bench supply
+- Smoke stopper
+- Inline current monitor
+- Low-risk subsystem power source
+
+Full propulsion-battery connection shall not be the first diagnostic method for an unverified electrical assembly.
+
+## 19.4 Rail Verification
+
+Regulated voltages shall be measured before connecting sensitive loads where practical.
+
+## 19.5 Functional Test
+
+Electrical interfaces shall be verified incrementally:
+
+1. Power rails
+2. MCU programming and debugging
+3. GPIO
+4. UART
+5. SPI
+6. IMU identity
+7. Sensor data
+8. ESC control without propellers
+9. Motor direction
+10. Integrated system operation
+
+## 19.6 Post-Test Inspection
+
+Following abnormal behavior, high-current testing, or a hard landing, inspect for:
+
+- Heat damage
+- Discoloration
+- Loose connectors
+- Broken strands
+- Damaged insulation
+- Lifted pads
+- Cracked solder joints
+- Battery damage
+- Unexpected odor
+
+---
+
+# 20. Documentation and Identification
+
+Electrical documentation shall include, where applicable:
+
+- System wiring diagram
+- Harness drawings
+- Connector pinouts
+- Signal names
+- Wire gauges
+- Wire colors
+- Power-rail definitions
+- Grounding strategy
+- Test points
+- Revision identifier
+- Interface ownership
+- Expected voltage and current
+
+Connector diagrams shall identify the viewing orientation.
+
+Ambiguous pin numbering shall be avoided.
+
+Changes to wiring or pin assignments shall be reflected in documentation before the affected configuration is considered released.
+
+---
+
+# 21. Deviations and Exceptions
 
 A deviation from this standard is permitted when:
 
 - A commercial component requires another interface.
-- Testing identifies a better technical solution.
-- A documented constraint makes compliance impractical.
-- The deviation improves safety, reliability, or maintainability.
+- A validated electrical constraint requires an alternative.
+- Testing identifies a safer or more reliable solution.
+- A temporary bring-up configuration is clearly identified as non-flight hardware.
+- The deviation is necessary to support future architecture.
 
 Significant deviations shall be documented in the applicable:
 
 - Architecture Decision Record
 - Hardware Decision Record
-- Design note
-- Part documentation
+- Interface-control documentation
+- Wiring diagram
 - Revision history
+- Test record
 
-A deviation shall not silently redefine the project standard.
+Temporary wiring shall not silently become the released flight configuration.
 
 ---
 
-# 19. References
+# 22. References
 
 - SPEC-001 — Stratus Rev A System Specification
 - REQ-001 — Stratus Rev A Requirements Specification
 - ARC-001 — Stratus System Architecture
 - BOM-001 — Bill of Materials
-- SES-002 — Stratus Electrical Engineering Standard
-- ADR-002 — Rev A Platform Size
-- ADR-003 — Modular Airframe Architecture
-- HDR-002 — HappyModel EX1404 Motors
-- HDR-004 — Gemfan Hurricane 3520 Propellers
-- HDR-006 — Mechanical Hardware Standard
+- SES-001 — Stratus Mechanical Engineering Standard
+- ADR-001 — STM32H743 Architecture
+- ADR-004 — Custom Flight Software
+- HDR-001 — ICM-20602 IMU
+- HDR-003 — Aero Selfie 45A 4-in-1 ESC
+- HDR-005 — 4S 850mAh Power System
+- HDR-007 — Wiring Materials Standard
 
 ---
 
-# 20. Related Documents
+# 23. Related Documents
 
 ## Upstream
 
@@ -737,13 +911,14 @@ A deviation shall not silently redefine the project standard.
 
 ## Peer
 
-- SES-002 — Electrical Engineering Standard
+- SES-001 — Mechanical Engineering Standard
 - BOM-001 — Bill of Materials
 
 ## Supporting
 
-- ADR-002 — Rev A Platform Size
-- ADR-003 — Modular Airframe Architecture
-- HDR-002 — Motor Selection
-- HDR-004 — Propeller Selection
-- HDR-006 — Mechanical Hardware Selection
+- ADR-001 — Flight Controller Architecture
+- ADR-004 — Custom Flight Software
+- HDR-001 — IMU Selection
+- HDR-003 — ESC Selection
+- HDR-005 — Battery and Power-System Selection
+- HDR-007 — Wiring-Material Selection
